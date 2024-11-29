@@ -1,6 +1,21 @@
 import _ from 'lodash'
 import { createServer } from 'node:http'
+import { Session } from 'node:inspector/promises'
 
+function cpuProfiling() {
+    let _session
+    return {
+        async start() {
+            _session = new Session()
+            _session.connect()
+
+            await _session.post('Profiler.enable')
+            await _session.post('Profiler.start')
+            console.log('started CPU Profilling')
+        },
+        async stop() {},
+    }
+}
 
 const largeDataset = Array.from({ length: 1e4 }, (_, id) => ({
     id,
@@ -52,3 +67,6 @@ createServer(
     .once('listening', function onListening() {
         console.log('Server started on http://localhost:3000');
     });
+
+    const {start, stop} = cpuProfiling()
+    start()
