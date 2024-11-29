@@ -13,7 +13,12 @@ function cpuProfiling() {
             await _session.post('Profiler.start')
             console.log('started CPU Profilling')
         },
-        async stop() {},
+        async stop() {
+                console.log('stopping CPU Profilling')
+                const { profile } = await _session.post('Profiler.stop')
+                console.log(profile)
+                _session.disconnect()
+        },
     }
 }
 
@@ -70,3 +75,7 @@ createServer(
 
     const {start, stop} = cpuProfiling()
     start()
+
+    setTimeout(() => {
+        stop()
+    },2000);
