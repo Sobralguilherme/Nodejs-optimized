@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { createServer } from 'node:http'
 import { Session } from 'node:inspector/promises'
 import { writeFile } from 'node:fs/promises'
+import { sign } from 'node:crypto'
 function cpuProfiling() {
     let _session
     return {
@@ -74,9 +75,13 @@ createServer(
         console.log('Server started on http://localhost:3000');
     });
 
-    const {start, stop} = cpuProfiling()
-    start()
+const {start, stop} = cpuProfiling()
+start()
 
-    setTimeout(() => {
-        stop()
-    },2000);
+const exitSignals = ['SIGINT', 'SIGTERM', 'SIGQUIT']
+exitSignals.forEach(signal =>{
+    process.once(signal,async () => {
+        await stop()
+        process.exit(0)
+    })
+})
