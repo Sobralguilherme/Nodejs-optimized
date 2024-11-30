@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { createServer } from 'node:http'
 import { Session } from 'node:inspector/promises'
-
+import { writeFile } from 'node:fs/promises'
 function cpuProfiling() {
     let _session
     return {
@@ -14,10 +14,11 @@ function cpuProfiling() {
             console.log('started CPU Profilling')
         },
         async stop() {
-                console.log('stopping CPU Profilling')
-                const { profile } = await _session.post('Profiler.stop')
-                console.log(profile)
-                _session.disconnect()
+            console.log('stopping CPU Profilling')
+            const { profile } = await _session.post('Profiler.stop')
+            const profileName = 'cpu-profile-${Date.now()}.cpuprofile'
+            await writeFile(profileName, JSON.stringify(profile))
+            _session.disconnect()
         },
     }
 }
