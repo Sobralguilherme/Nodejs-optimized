@@ -44,7 +44,7 @@ function issueRoute() {
     const transformedUsers = activeUsers.map((user) => ({
         ...user,
         name: user.name.toUpperCase(),
-    })),
+    }));
 
     return transformedUsers;
 }
