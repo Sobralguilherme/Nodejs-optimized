@@ -2,7 +2,6 @@ import _ from 'lodash'
 import { createServer } from 'node:http'
 import { Session } from 'node:inspector/promises'
 import { writeFile } from 'node:fs/promises'
-import { sign } from 'node:crypto'
 function cpuProfiling() {
     let _session
     return {
@@ -32,13 +31,21 @@ const largeDataset = Array.from({ length: 1e4 }, (_, id) => ({
 
 function issueRoute() {
     const clonedData = _.cloneDeep(largeDataset);
+    // conts cloneData = largeDataset;
 
-    const activeUsers = _.filter(clonedData, { isActive: true });
+    const activeUsers = clonedData.filter((item) => item.isActive);
+    // const activeUsers = _.filter(clonedData, { isActive: true });
+    
+    // const transformedUsers = _.map(activeUsers, (user) => ({
+    //    ...user,
+    //    name: user.name.toUpperCase(),
+    // }));
 
-    const transformedUsers = _.map(activeUsers, (user) => ({
+    const transformedUsers = activeUsers.map((user) => ({
         ...user,
         name: user.name.toUpperCase(),
-    }));
+    })),
+
     return transformedUsers;
 }
 
