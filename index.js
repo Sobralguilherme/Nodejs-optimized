@@ -31,7 +31,7 @@ const largeDataset = Array.from({ length: 1e4 }, (_, id) => ({
 
 function issueRoute() {
 
-    conts clonedData = largeDataset;
+    const clonedData = largeDataset;
 
     const activeUsers = clonedData.filter((item) => item.isActive);
 
