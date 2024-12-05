@@ -30,16 +30,10 @@ const largeDataset = Array.from({ length: 1e4 }, (_, id) => ({
 }));
 
 function issueRoute() {
-    const clonedData = _.cloneDeep(largeDataset);
-    // conts cloneData = largeDataset;
+
+    conts clonedData = largeDataset;
 
     const activeUsers = clonedData.filter((item) => item.isActive);
-    // const activeUsers = _.filter(clonedData, { isActive: true });
-    
-    // const transformedUsers = _.map(activeUsers, (user) => ({
-    //    ...user,
-    //    name: user.name.toUpperCase(),
-    // }));
 
     const transformedUsers = activeUsers.map((user) => ({
         ...user,
